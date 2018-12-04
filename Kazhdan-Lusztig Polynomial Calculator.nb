@@ -1,0 +1,729 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.2' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     29411,        721]
+NotebookOptionsPosition[     28647,        699]
+NotebookOutlinePosition[     29007,        715]
+CellTagsIndexPosition[     28964,        712]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[{"ClearAll", "\n", 
+ RowBox[{"mainassoc", "=", 
+  RowBox[{"Association", "[", "]"}]}], "\n", 
+ RowBox[{
+  RowBox[{"length", "=", "0"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"NumberFlatsContractionTypeOne", "[", 
+    RowBox[{"n_", ",", "m_", ",", "j_", ",", "rank_"}], "]"}], ":=", 
+   RowBox[{
+    RowBox[{"Binomial", "[", 
+     RowBox[{
+      RowBox[{"n", "-", "1"}], ",", "j"}], "]"}], "*", 
+    RowBox[{"Binomial", "[", 
+     RowBox[{
+      RowBox[{"m", "-", "1"}], ",", 
+      RowBox[{"rank", "-", "j", "-", "1"}]}], "]"}]}]}], 
+  "\[IndentingNewLine]"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"NumberFlatsContractionTypeTwo", "[", 
+    RowBox[{"n_", ",", "m_", ",", "j_", ",", "rank_"}], "]"}], ":=", 
+   RowBox[{
+    RowBox[{"Binomial", "[", 
+     RowBox[{
+      RowBox[{"n", "-", "1"}], ",", "j"}], "]"}], "*", 
+    RowBox[{"Binomial", "[", 
+     RowBox[{
+      RowBox[{"m", "-", "1"}], ",", 
+      RowBox[{"rank", "-", "j"}]}], "]"}]}]}], 
+  "\n"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Zerofunction", "[", "x_", "]"}], ":=", 
+  "0"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ComputeKLPolynomial", "[", "zstar_", "]"}], ":=", 
+   RowBox[{"Module", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"degree", "=", "0"}], ",", 
+       RowBox[{"Klpolynomial", "=", 
+        RowBox[{"Array", "[", 
+         RowBox[{"Zerofunction", ",", "100", ",", "1"}], "]"}]}]}], "}"}], 
+     ",", 
+     RowBox[{
+      RowBox[{"For", "[", 
+       RowBox[{
+        RowBox[{"j", "=", "1"}], ",", 
+        RowBox[{"j", "\[LessEqual]", 
+         RowBox[{"Length", "[", "zstar", "]"}]}], ",", 
+        RowBox[{"j", "++"}], ",", 
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"zstar", "[", 
+            RowBox[{"[", "j", "]"}], "]"}], ">", "0"}], ",", 
+          RowBox[{"degree", "=", "j"}]}], "]"}]}], "]"}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"Klpolynomial", "[", 
+        RowBox[{"[", "1", "]"}], "]"}], "=", 
+       RowBox[{"zstar", "[", 
+        RowBox[{"[", "degree", "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"For", "[", 
+       RowBox[{
+        RowBox[{"i", "=", "2"}], ",", 
+        RowBox[{"i", "<", 
+         RowBox[{
+          RowBox[{"degree", "/", "2"}], "+", "1"}]}], ",", 
+        RowBox[{"i", "++"}], ",", 
+        RowBox[{
+         RowBox[{"Klpolynomial", "[", 
+          RowBox[{"[", "i", "]"}], "]"}], "=", 
+         RowBox[{
+          RowBox[{"zstar", "[", 
+           RowBox[{"[", 
+            RowBox[{"degree", "-", "i", "+", "1"}], "]"}], "]"}], "-", 
+          RowBox[{"zstar", "[", 
+           RowBox[{"[", 
+            RowBox[{"i", "-", "1"}], "]"}], "]"}]}]}]}], "]"}], ";", 
+      "\[IndentingNewLine]", "Klpolynomial"}]}], "]"}]}], 
+  "\n"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"CreateKLContractionsDatabaseEntry", "[", 
+    RowBox[{"newn_", ",", "newm_", ",", "type_"}], "]"}], ":=", 
+   RowBox[{"Module", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"zstar", "=", 
+        RowBox[{"Array", "[", 
+         RowBox[{"Zerofunction", ",", "100", ",", "1"}], "]"}]}], ",", 
+       RowBox[{"klpolynomial", "=", 
+        RowBox[{"Array", "[", 
+         RowBox[{"Zerofunction", ",", "100", ",", "1"}], "]"}]}], ",", 
+       RowBox[{"klpolynomial1", "=", 
+        RowBox[{"Array", "[", 
+         RowBox[{"Zerofunction", ",", "100", ",", "1"}], "]"}]}], ",", 
+       RowBox[{"klpolynomial2", "=", 
+        RowBox[{"Array", "[", 
+         RowBox[{"Zerofunction", ",", "100", ",", "1"}], "]"}]}]}], "}"}], 
+     ",", 
+     RowBox[{
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{"type", "\[Equal]", "2"}], ",", 
+        RowBox[{
+         RowBox[{"zstar", "=", 
+          RowBox[{"ZStarPolynomialNU", "[", 
+           RowBox[{"newn", ",", "newm"}], "]"}]}], ";", "\[IndentingNewLine]", 
+         RowBox[{"klpolynomial", "=", 
+          RowBox[{"ComputeKLPolynomial", "[", "zstar", "]"}]}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"AppendTo", "[", 
+          RowBox[{"mainassoc", ",", 
+           RowBox[{
+            RowBox[{"{", 
+             RowBox[{"newn", ",", "newm", ",", "2"}], "}"}], "\[Rule]", 
+            "klpolynomial"}]}], "]"}]}]}], "]"}], ";", "\[IndentingNewLine]", 
+      
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{"type", "\[Equal]", "1"}], ",", 
+        RowBox[{
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"MemberQ", "[", 
+             RowBox[{
+              RowBox[{"Keys", "[", "mainassoc", "]"}], ",", 
+              RowBox[{"{", 
+               RowBox[{"newn", ",", "3"}], "}"}]}], "]"}], "\[Equal]", 
+            "False"}], ",", 
+           RowBox[{"CreateKLContractionsDatabaseEntry", "[", 
+            RowBox[{"newn", ",", "0", ",", "3"}], "]"}]}], "]"}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"MemberQ", "[", 
+             RowBox[{
+              RowBox[{"Keys", "[", "mainassoc", "]"}], ",", 
+              RowBox[{"{", 
+               RowBox[{"newm", ",", "3"}], "}"}]}], "]"}], "\[Equal]", 
+            "False"}], ",", 
+           RowBox[{"CreateKLContractionsDatabaseEntry", "[", 
+            RowBox[{"newm", ",", "0", ",", "3"}], "]"}]}], "]"}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"klpolynomial1", "=", 
+          RowBox[{
+           RowBox[{"Lookup", "[", 
+            RowBox[{"mainassoc", ",", 
+             RowBox[{"{", 
+              RowBox[{"{", 
+               RowBox[{"newn", ",", "3"}], "}"}], "}"}]}], "]"}], "[", 
+           RowBox[{"[", "1", "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+         RowBox[{"klpolynomial2", "=", 
+          RowBox[{
+           RowBox[{"Lookup", "[", 
+            RowBox[{"mainassoc", ",", 
+             RowBox[{"{", 
+              RowBox[{"{", 
+               RowBox[{"newm", ",", "3"}], "}"}], "}"}]}], "]"}], "[", 
+           RowBox[{"[", "1", "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"klpolynomial", "[", 
+           RowBox[{"[", "1", "]"}], "]"}], "=", "1"}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"For", "[", 
+          RowBox[{
+           RowBox[{"i", "=", "2"}], ",", 
+           RowBox[{"i", "<", 
+            RowBox[{"Length", "[", "klpolynomial", "]"}]}], ",", 
+           RowBox[{"i", "++"}], ",", 
+           RowBox[{"For", "[", 
+            RowBox[{
+             RowBox[{"j", "=", "1"}], ",", 
+             RowBox[{"j", "\[LessEqual]", "i"}], ",", 
+             RowBox[{"j", "++"}], ",", 
+             RowBox[{
+              RowBox[{"klpolynomial", "[", 
+               RowBox[{"[", "i", "]"}], "]"}], "=", 
+              RowBox[{
+               RowBox[{"klpolynomial", "[", 
+                RowBox[{"[", "i", "]"}], "]"}], "+", 
+               RowBox[{
+                RowBox[{"klpolynomial1", "[", 
+                 RowBox[{"[", "j", "]"}], "]"}], "*", 
+                RowBox[{"klpolynomial2", "[", 
+                 RowBox[{"[", 
+                  RowBox[{"i", "-", "j", "+", "1"}], "]"}], "]"}]}]}]}]}], 
+            "]"}]}], "]"}], ";", "\[IndentingNewLine]", 
+         RowBox[{"AppendTo", "[", 
+          RowBox[{"mainassoc", ",", 
+           RowBox[{
+            RowBox[{"{", 
+             RowBox[{"newn", ",", "newm", ",", "1"}], "}"}], "\[Rule]", 
+            "klpolynomial"}]}], "]"}]}]}], "]"}], ";", "\[IndentingNewLine]", 
+      
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{"type", "\[Equal]", "3"}], ",", 
+        RowBox[{
+         RowBox[{"klpolynomial", "=", 
+          RowBox[{"ComputeKLPolynomial", "[", 
+           RowBox[{"ZStarPolynomialU", "[", "newn", "]"}], "]"}]}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"AppendTo", "[", 
+          RowBox[{"mainassoc", ",", 
+           RowBox[{
+            RowBox[{"{", 
+             RowBox[{"newn", ",", "3"}], "}"}], "\[Rule]", "klpolynomial"}]}],
+           "]"}]}]}], "]"}], ";"}]}], "]"}]}], "\n"}], "\[IndentingNewLine]", 
+
+ RowBox[{
+  RowBox[{
+   RowBox[{"ZStarPolynomialU", "[", "n_", "]"}], ":=", "\[IndentingNewLine]", 
+   
+   RowBox[{"Module", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"Coefficients", "=", 
+        RowBox[{"Array", "[", 
+         RowBox[{"Zerofunction", ",", "100", ",", "1"}], "]"}]}], ",", " ", 
+       RowBox[{"rnk", "=", 
+        RowBox[{"n", "-", "1"}]}], ",", 
+       RowBox[{"contributor", "=", "0"}]}], "}"}], ",", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"Coefficients", "[", 
+        RowBox[{"[", "rnk", "]"}], "]"}], "=", "1"}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"For", "[", 
+       RowBox[{
+        RowBox[{"rnk", "=", 
+         RowBox[{"n", "-", "2"}]}], ",", 
+        RowBox[{"rnk", ">", "0"}], ",", 
+        RowBox[{"rnk", "=", 
+         RowBox[{"rnk", "-", "1"}]}], ",", "\[IndentingNewLine]", 
+        RowBox[{"For", "[", 
+         RowBox[{
+          RowBox[{"contributor", "=", "rnk"}], ",", 
+          RowBox[{"contributor", "\[GreaterEqual]", 
+           RowBox[{"Max", "[", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"2", "*", "rnk"}], "-", "n", "+", "1"}], ",", "1"}], 
+            "]"}]}], ",", 
+          RowBox[{"contributor", "=", 
+           RowBox[{"contributor", "-", "1"}]}], ",", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"If", "[", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"MemberQ", "[", 
+               RowBox[{
+                RowBox[{"Keys", "[", "mainassoc", "]"}], ",", 
+                RowBox[{"{", 
+                 RowBox[{
+                  RowBox[{"n", "-", "contributor"}], ",", "3"}], "}"}]}], 
+               "]"}], "\[Equal]", "False"}], ",", 
+             RowBox[{"CreateKLContractionsDatabaseEntry", "[", 
+              RowBox[{
+               RowBox[{"n", "-", "contributor"}], ",", "0", ",", "3"}], 
+              "]"}]}], "]"}], ";", "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"Coefficients", "[", 
+             RowBox[{"[", "rnk", "]"}], "]"}], "=", 
+            RowBox[{
+             RowBox[{"Coefficients", "[", 
+              RowBox[{"[", "rnk", "]"}], "]"}], "+", 
+             RowBox[{
+              RowBox[{
+               RowBox[{
+                RowBox[{"Lookup", "[", 
+                 RowBox[{"mainassoc", ",", 
+                  RowBox[{"{", 
+                   RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"n", "-", "contributor"}], ",", "3"}], "}"}], 
+                   "}"}]}], "]"}], "[", 
+                RowBox[{"[", "1", "]"}], "]"}], "[", 
+               RowBox[{"[", 
+                RowBox[{"rnk", "-", "contributor", "+", "1"}], "]"}], "]"}], 
+              "*", 
+              RowBox[{"Binomial", "[", 
+               RowBox[{"n", ",", "contributor"}], "]"}]}]}]}]}]}], 
+         "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", "]"}], ";", 
+      "\[IndentingNewLine]", "Coefficients"}]}], "]"}]}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ZStarPolynomialNU", "[", 
+    RowBox[{"n_", ",", "m_"}], "]"}], ":=", "\[IndentingNewLine]", 
+   RowBox[{"Module", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"Coefficients", "=", 
+        RowBox[{"Array", "[", 
+         RowBox[{"Zerofunction", ",", "100", ",", "1"}], "]"}]}], ",", 
+       RowBox[{"rnk", "=", 
+        RowBox[{"n", "+", "m", "-", "3"}]}], ",", 
+       RowBox[{"contributor", "=", "0"}], ",", 
+       RowBox[{"flatT1j", "=", "0"}], ",", 
+       RowBox[{"flatT2j", "=", "0"}]}], "}"}], ",", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"Coefficients", "[", 
+        RowBox[{"[", "rnk", "]"}], "]"}], "=", "1"}], ";", 
+      RowBox[{"length", "=", 
+       RowBox[{"Max", "[", 
+        RowBox[{"length", ",", 
+         RowBox[{"m", "+", "n"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"For", "[", 
+       RowBox[{
+        RowBox[{"rnk", "=", 
+         RowBox[{"(", 
+          RowBox[{"n", "+", "m", "-", "4"}], ")"}]}], ",", 
+        RowBox[{"rnk", ">", "0"}], ",", 
+        RowBox[{"rnk", "=", 
+         RowBox[{"rnk", "-", "1"}]}], ",", 
+        RowBox[{"For", "[", 
+         RowBox[{
+          RowBox[{"contributor", "=", "rnk"}], ",", 
+          RowBox[{"contributor", "\[GreaterEqual]", 
+           RowBox[{"Max", "[", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"2", "*", "rnk"}], "-", "n", "-", "m", "+", "4"}], ",", 
+             "1"}], "]"}]}], ",", 
+          RowBox[{"contributor", "=", 
+           RowBox[{"contributor", "-", "1"}]}], ",", 
+          RowBox[{
+           RowBox[{"For", "[", 
+            RowBox[{
+             RowBox[{"flatT1j", "=", 
+              RowBox[{"Max", "[", 
+               RowBox[{
+                RowBox[{"contributor", "-", 
+                 RowBox[{"(", 
+                  RowBox[{"m", "-", "2"}], ")"}]}], ",", "0"}], "]"}]}], ",", 
+             
+             RowBox[{"flatT1j", "\[LessEqual]", 
+              RowBox[{"n", "-", "3"}]}], ",", 
+             RowBox[{"flatT1j", "++"}], ",", 
+             RowBox[{
+              RowBox[{"If", "[", 
+               RowBox[{
+                RowBox[{
+                 RowBox[{"MemberQ", "[", 
+                  RowBox[{
+                   RowBox[{"Keys", "[", "mainassoc", "]"}], ",", 
+                   RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"n", "-", "flatT1j", "-", "1"}], ",", 
+                    RowBox[{"m", "-", "contributor", "+", "flatT1j"}], ",", 
+                    "1"}], "}"}]}], "]"}], "\[Equal]", "False"}], ",", 
+                RowBox[{"CreateKLContractionsDatabaseEntry", "[", 
+                 RowBox[{
+                  RowBox[{"n", "-", "flatT1j", "-", "1"}], ",", 
+                  RowBox[{"m", "-", "contributor", "+", "flatT1j"}], ",", 
+                  "1"}], "]"}]}], "]"}], ";", "\[IndentingNewLine]", 
+              RowBox[{
+               RowBox[{"Coefficients", "[", 
+                RowBox[{"[", "rnk", "]"}], "]"}], "=", 
+               RowBox[{
+                RowBox[{"Coefficients", "[", 
+                 RowBox[{"[", "rnk", "]"}], "]"}], "+", 
+                RowBox[{
+                 RowBox[{"(", 
+                  RowBox[{
+                   RowBox[{
+                    RowBox[{"Lookup", "[", 
+                    RowBox[{"mainassoc", ",", 
+                    RowBox[{"{", 
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"n", "-", "flatT1j", "-", "1"}], ",", 
+                    RowBox[{"m", "-", "contributor", "+", "flatT1j"}], ",", 
+                    "1"}], "}"}], "}"}]}], "]"}], "[", 
+                    RowBox[{"[", "1", "]"}], "]"}], "[", 
+                   RowBox[{"[", 
+                    RowBox[{"rnk", "-", "contributor", "+", "1"}], "]"}], 
+                   "]"}], ")"}], "*", 
+                 RowBox[{"NumberFlatsContractionTypeOne", "[", 
+                  RowBox[{"n", ",", "m", ",", "flatT1j", ",", "contributor"}],
+                   "]"}]}]}]}]}]}], "]"}], ";", "\[IndentingNewLine]", 
+           RowBox[{"For", "[", 
+            RowBox[{
+             RowBox[{"flatT2j", "=", 
+              RowBox[{"contributor", "-", 
+               RowBox[{"(", 
+                RowBox[{"m", "-", "2"}], ")"}]}]}], ",", 
+             RowBox[{"flatT2j", "\[LessEqual]", 
+              RowBox[{"n", "-", "2"}]}], ",", 
+             RowBox[{"flatT2j", "++"}], ",", 
+             RowBox[{
+              RowBox[{"If", "[", 
+               RowBox[{
+                RowBox[{
+                 RowBox[{"MemberQ", "[", 
+                  RowBox[{
+                   RowBox[{"Keys", "[", "mainassoc", "]"}], ",", 
+                   RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"n", "-", "flatT2j"}], ",", 
+                    RowBox[{"m", "-", "contributor", "+", "flatT2j"}], ",", 
+                    "2"}], "}"}]}], "]"}], "\[Equal]", "False"}], ",", 
+                RowBox[{"CreateKLContractionsDatabaseEntry", "[", 
+                 RowBox[{
+                  RowBox[{"n", "-", "flatT2j"}], ",", 
+                  RowBox[{"m", "-", "contributor", "+", "flatT2j"}], ",", 
+                  "2"}], "]"}]}], "]"}], ";", "\[IndentingNewLine]", 
+              RowBox[{
+               RowBox[{"Coefficients", "[", 
+                RowBox[{"[", "rnk", "]"}], "]"}], "=", 
+               RowBox[{
+                RowBox[{"Coefficients", "[", 
+                 RowBox[{"[", "rnk", "]"}], "]"}], "+", 
+                RowBox[{
+                 RowBox[{"(", 
+                  RowBox[{
+                   RowBox[{
+                    RowBox[{"Lookup", "[", 
+                    RowBox[{"mainassoc", ",", 
+                    RowBox[{"{", 
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"n", "-", "flatT2j"}], ",", 
+                    RowBox[{"m", "-", "contributor", "+", "flatT2j"}], ",", 
+                    "2"}], "}"}], "}"}]}], "]"}], "[", 
+                    RowBox[{"[", "1", "]"}], "]"}], "[", 
+                   RowBox[{"[", 
+                    RowBox[{"rnk", "-", "contributor", "+", "1"}], "]"}], 
+                   "]"}], ")"}], "*", 
+                 RowBox[{"NumberFlatsContractionTypeTwo", "[", 
+                  RowBox[{"n", ",", "m", ",", "flatT2j", ",", "contributor"}],
+                   "]"}]}]}]}]}]}], "]"}], ";", "\[IndentingNewLine]", 
+           RowBox[{"If", "[", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"MemberQ", "[", 
+               RowBox[{
+                RowBox[{"Keys", "[", "mainassoc", "]"}], ",", 
+                RowBox[{"{", 
+                 RowBox[{
+                  RowBox[{"n", "-", 
+                   RowBox[{"(", 
+                    RowBox[{"contributor", "+", "1", "-", "m"}], ")"}], "-", 
+                   "1"}], ",", "3"}], "}"}]}], "]"}], "\[Equal]", "False"}], 
+             ",", 
+             RowBox[{"CreateKLContractionsDatabaseEntry", "[", 
+              RowBox[{
+               RowBox[{"n", "-", 
+                RowBox[{"(", 
+                 RowBox[{"contributor", "+", "1", "-", "m"}], ")"}], "-", 
+                "1"}], ",", "0", ",", "3"}], "]"}]}], "]"}], ";", 
+           "\[IndentingNewLine]", 
+           RowBox[{"If", "[", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"MemberQ", "[", 
+               RowBox[{
+                RowBox[{"Keys", "[", "mainassoc", "]"}], ",", 
+                RowBox[{"{", 
+                 RowBox[{
+                  RowBox[{"m", "-", 
+                   RowBox[{"(", 
+                    RowBox[{"contributor", "+", "1", "-", "n"}], ")"}], "-", 
+                   "1"}], ",", "3"}], "}"}]}], "]"}], "\[Equal]", "False"}], 
+             ",", 
+             RowBox[{"CreateKLContractionsDatabaseEntry", "[", 
+              RowBox[{
+               RowBox[{"m", "-", 
+                RowBox[{"(", 
+                 RowBox[{"contributor", "+", "1", "-", "n"}], ")"}], "-", 
+                "1"}], ",", "0", ",", "3"}], "]"}]}], "]"}], ";", 
+           "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"Coefficients", "[", 
+             RowBox[{"[", "rnk", "]"}], "]"}], "=", 
+            RowBox[{
+             RowBox[{"Coefficients", "[", 
+              RowBox[{"[", "rnk", "]"}], "]"}], "+", 
+             RowBox[{
+              RowBox[{"(", 
+               RowBox[{
+                RowBox[{
+                 RowBox[{"Lookup", "[", 
+                  RowBox[{"mainassoc", ",", 
+                   RowBox[{"{", 
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"n", "-", 
+                    RowBox[{"(", 
+                    RowBox[{"contributor", "+", "1", "-", "m"}], ")"}], "-", 
+                    "1"}], ",", "3"}], "}"}], "}"}]}], "]"}], "[", 
+                 RowBox[{"[", "1", "]"}], "]"}], "[", 
+                RowBox[{"[", 
+                 RowBox[{"rnk", "-", "contributor", "+", "1"}], "]"}], "]"}], 
+               ")"}], "*", 
+              RowBox[{"Binomial", "[", 
+               RowBox[{
+                RowBox[{"n", "-", "1"}], ",", 
+                RowBox[{"contributor", "+", "1", "-", "m"}]}], "]"}]}], "+", 
+             RowBox[{
+              RowBox[{"(", 
+               RowBox[{
+                RowBox[{
+                 RowBox[{"Lookup", "[", 
+                  RowBox[{"mainassoc", ",", 
+                   RowBox[{"{", 
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"m", "-", 
+                    RowBox[{"(", 
+                    RowBox[{"contributor", "+", "1", "-", "n"}], ")"}], "-", 
+                    "1"}], ",", "3"}], "}"}], "}"}]}], "]"}], "[", 
+                 RowBox[{"[", "1", "]"}], "]"}], "[", 
+                RowBox[{"[", 
+                 RowBox[{"rnk", "-", "contributor", "+", "1"}], "]"}], "]"}], 
+               ")"}], "*", 
+              RowBox[{"Binomial", "[", 
+               RowBox[{
+                RowBox[{"m", "-", "1"}], ",", 
+                RowBox[{"contributor", "+", "1", "-", "n"}]}], 
+               "]"}]}]}]}]}]}], "]"}]}], "]"}], ";", "\[IndentingNewLine]", 
+      "Coefficients"}]}], "]"}]}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"GuessKLPolynomial", "[", 
+   RowBox[{"n_", ",", "m_"}], "]"}], ":=", "\[IndentingNewLine]", 
+  RowBox[{"Module", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"res", "=", 
+      RowBox[{"Array", "[", 
+       RowBox[{"Zerofunction", ",", 
+        RowBox[{"Floor", "[", 
+         RowBox[{
+          RowBox[{"(", 
+           RowBox[{"m", "+", "n"}], ")"}], "/", "2"}], "]"}], ",", "1"}], 
+       "]"}]}], "}"}], ",", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"For", "[", 
+      RowBox[{
+       RowBox[{"e", "=", "0"}], ",", 
+       RowBox[{"e", "<", 
+        RowBox[{"Length", "[", "res", "]"}]}], ",", 
+       RowBox[{"e", "++"}], ",", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"res", "[", 
+         RowBox[{"[", 
+          RowBox[{"e", "+", "1"}], "]"}], "]"}], "=", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"ComputeKLPolynomial", "[", 
+           RowBox[{"ZStarPolynomialU", "[", 
+            RowBox[{"n", "+", "m", "-", "2"}], "]"}], "]"}], "[", 
+          RowBox[{"[", 
+           RowBox[{"e", "+", "1"}], "]"}], "]"}], "-", 
+         RowBox[{"Sum", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{
+             RowBox[{"ComputeKLPolynomial", "[", 
+              RowBox[{"ZStarPolynomialU", "[", 
+               RowBox[{"m", "-", "1"}], "]"}], "]"}], "[", 
+             RowBox[{"[", "c", "]"}], "]"}], "*", 
+            RowBox[{
+             RowBox[{"ComputeKLPolynomial", "[", 
+              RowBox[{"ZStarPolynomialU", "[", 
+               RowBox[{"n", "-", "1"}], "]"}], "]"}], "[", 
+             RowBox[{"[", 
+              RowBox[{"e", "-", "c", "+", "1"}], "]"}], "]"}]}], ",", 
+           RowBox[{"{", 
+            RowBox[{"c", ",", "1", ",", "e"}], "}"}]}], "]"}]}]}]}], "]"}], 
+     ";", "\[IndentingNewLine]", "res"}]}], "]"}]}]}], "Input",
+ CellChangeTimes->{{3.7524908393182993`*^9, 3.752490938938312*^9}, {
+   3.7524910011905537`*^9, 3.752491021290197*^9}, {3.752491354174333*^9, 
+   3.752491410930414*^9}, {3.752491516798935*^9, 3.7524917359383583`*^9}, {
+   3.7524920009561253`*^9, 3.752492075710774*^9}, {3.7524922287814713`*^9, 
+   3.752492232842928*^9}, {3.752492338402614*^9, 3.752492379438863*^9}, {
+   3.752492443095685*^9, 3.7524924467726183`*^9}, {3.752492561516761*^9, 
+   3.752492613326528*^9}, {3.752492644085146*^9, 3.7524926970678673`*^9}, {
+   3.7524927299137783`*^9, 3.752492803219935*^9}, {3.75249319135531*^9, 
+   3.75249319631437*^9}, {3.752493231462281*^9, 3.75249329519973*^9}, {
+   3.752493349062792*^9, 3.7524933548379593`*^9}, {3.7524933890595493`*^9, 
+   3.75249339071008*^9}, {3.752493501654313*^9, 3.752493545276082*^9}, {
+   3.7524938825957623`*^9, 3.7524938848541107`*^9}, {3.7524940437064857`*^9, 
+   3.7524940665686617`*^9}, {3.7524941891834173`*^9, 3.75249422929607*^9}, {
+   3.7524942671789703`*^9, 3.75249431251845*^9}, {3.7524945403606777`*^9, 
+   3.752494542180888*^9}, {3.752494577319751*^9, 3.752494627816935*^9}, {
+   3.752494661602181*^9, 3.752494665630361*^9}, {3.7524947083304033`*^9, 
+   3.752494881413719*^9}, {3.752494917662093*^9, 3.7524950342610683`*^9}, {
+   3.7524950891128283`*^9, 3.7524952089160757`*^9}, {3.752495360792818*^9, 
+   3.752495388241527*^9}, {3.7524963142755737`*^9, 3.7524963339075613`*^9}, {
+   3.752496495256289*^9, 3.752496507230878*^9}, {3.752496564428925*^9, 
+   3.752496587714913*^9}, {3.752496687157599*^9, 3.7524968061908503`*^9}, {
+   3.752496860253991*^9, 3.752496938611146*^9}, {3.752497006703102*^9, 
+   3.752497007142832*^9}, {3.752497159070904*^9, 3.752497173038374*^9}, {
+   3.752497264884984*^9, 3.7524972941539173`*^9}, {3.752498075092555*^9, 
+   3.7524981226780977`*^9}, {3.7524981864035378`*^9, 3.752498189169278*^9}, {
+   3.752498221538389*^9, 3.75249822195684*^9}, {3.752785307598954*^9, 
+   3.7527853079950447`*^9}, 
+   3.75278535327966*^9},ExpressionUUID->"745d1120-dc6b-49ed-8b88-\
+d53ba875fea3"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"DeleteCases", "[", 
+  RowBox[{
+   RowBox[{"ComputeKLPolynomial", "[", 
+    RowBox[{"ZStarPolynomialNU", "[", 
+     RowBox[{"9", ",", "11"}], "]"}], "]"}], ",", "0"}], "]"}]], "Input",
+ CellChangeTimes->{{3.752498204875235*^9, 3.752498259024057*^9}, {
+  3.7524983196801777`*^9, 3.7524983282307043`*^9}, {3.7524984570378532`*^9, 
+  3.752498495195448*^9}, {3.752499185368925*^9, 3.752499213033428*^9}, {
+  3.75278021826713*^9, 3.752780219372868*^9}, {3.752780297557411*^9, 
+  3.7527802993827047`*^9}, {3.752783350004739*^9, 3.752783351556794*^9}, {
+  3.7527840409305143`*^9, 3.7527840426692953`*^9}, {3.752784114578329*^9, 
+  3.752784117126329*^9}, {3.752784304541884*^9, 3.752784304854314*^9}, {
+  3.7527846861372843`*^9, 3.752784688522483*^9}, {3.7527847283410187`*^9, 
+  3.752784728437249*^9}, {3.7527852581021557`*^9, 3.752785261331159*^9}, {
+  3.752785293389155*^9, 3.752785295482066*^9}, {3.752785331439684*^9, 
+  3.752785335192665*^9}, {3.752813389340108*^9, 
+  3.752813391677977*^9}},ExpressionUUID->"960fb5ed-a15f-4845-86a5-\
+2979b638fba3"],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+  "1", ",", "134", ",", "4586", ",", "57363", ",", "296166", ",", "640604", 
+   ",", "536130", ",", "136656", ",", "4274"}], "}"}]], "Output",
+ CellChangeTimes->{3.7527853365627003`*^9, 
+  3.752813395860181*^9},ExpressionUUID->"89b79da3-97aa-4eb7-8dcc-\
+9c5d1a10107c"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"DeleteCases", "[", 
+  RowBox[{
+   RowBox[{"GuessKLPolynomial", "[", 
+    RowBox[{"9", ",", "11"}], "]"}], ",", "0"}], "]"}]], "Input",
+ CellChangeTimes->{{3.752781775636759*^9, 3.752781821063064*^9}, {
+   3.75278190480923*^9, 3.752781940037771*^9}, {3.752781985755537*^9, 
+   3.75278216544281*^9}, {3.752782306406986*^9, 3.7527823064385357`*^9}, {
+   3.75278251088725*^9, 3.752782513049055*^9}, {3.7527825462079372`*^9, 
+   3.752782547389838*^9}, {3.752782583397566*^9, 3.7527826083968678`*^9}, {
+   3.7527826702184134`*^9, 3.752782687715658*^9}, {3.752783102514071*^9, 
+   3.7527831035301027`*^9}, {3.7527833090407257`*^9, 3.752783319931354*^9}, 
+   3.752783444050447*^9, {3.75278356483465*^9, 3.752783566285452*^9}, {
+   3.752783765770301*^9, 3.752783776281643*^9}, {3.752783823442759*^9, 
+   3.752783823637704*^9}, {3.75278388911768*^9, 3.7527838935692787`*^9}, {
+   3.752783950932898*^9, 3.752783952274527*^9}, {3.752784795436833*^9, 
+   3.752785109277802*^9}, {3.752785151907133*^9, 3.752785239985258*^9}, {
+   3.75278530632409*^9, 3.7527853413562813`*^9}, {3.75281339326215*^9, 
+   3.752813393525668*^9}},ExpressionUUID->"c57eb626-a8c7-48c0-a0bc-\
+c1bb076738ba"],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+  "1", ",", "134", ",", "4586", ",", "57363", ",", "296166", ",", "640604", 
+   ",", "536130", ",", "136656", ",", "4274"}], "}"}]], "Output",
+ CellChangeTimes->{3.752785342778013*^9, 
+  3.752813399132414*^9},ExpressionUUID->"32303a1f-5861-40fd-a0cc-\
+333a026d15df"]
+}, Open  ]]
+},
+WindowSize->{809, 609},
+WindowMargins->{{193, Automatic}, {47, Automatic}},
+FrontEndVersion->"11.2 for Mac OS X x86 (32-bit, 64-bit Kernel) (September \
+10, 2017)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 25129, 612, 1921, "Input",ExpressionUUID->"745d1120-dc6b-49ed-8b88-d53ba875fea3"],
+Cell[CellGroupData[{
+Cell[25712, 636, 1070, 18, 30, "Input",ExpressionUUID->"960fb5ed-a15f-4845-86a5-2979b638fba3"],
+Cell[26785, 656, 308, 7, 34, "Output",ExpressionUUID->"89b79da3-97aa-4eb7-8dcc-9c5d1a10107c"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[27130, 668, 1192, 19, 30, "Input",ExpressionUUID->"c57eb626-a8c7-48c0-a0bc-c1bb076738ba"],
+Cell[28325, 689, 306, 7, 68, "Output",ExpressionUUID->"32303a1f-5861-40fd-a0cc-333a026d15df"]
+}, Open  ]]
+}
+]
+*)
+
