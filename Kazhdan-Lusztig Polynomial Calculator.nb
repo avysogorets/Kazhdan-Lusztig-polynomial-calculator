@@ -111,23 +111,9 @@ ZStarPolynomialNU[n_, m_] :=
        Binomial[m - 1, contributor + 1 - n]]];
   Coefficients]
 
-GuessKLPolynomial[n_, m_] :=
- 
- Module[{res = Array[Zerofunction, Floor[(m + n)/2], 1]},
-  For[e = 0, e < Length[res], e++,
-   res[[e + 1]] = 
-    ComputeKLPolynomial[ZStarPolynomialU[n + m - 2]][[e + 1]] - 
-     Sum[ComputeKLPolynomial[ZStarPolynomialU[m - 1]][[c]]*
-       ComputeKLPolynomial[ZStarPolynomialU[n - 1]][[e - c + 1]], {c, 
-       1, e}]];
-  res]
-
 ------------ Working Example-------------
 
 In[94]:= DeleteCases[ComputeKLPolynomial[ZStarPolynomialNU[10, 3]], 0]
 
 Out[94]= {1, 43, 358, 705, 246}
 
-In[93]:= DeleteCases[GuessKLPolynomial[10, 3], 0]
-
-Out[93]= {1, 43, 358, 705, 246}
